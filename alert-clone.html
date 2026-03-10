@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alert - 12-P-4007-B3A-P | UHM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Prompt', 'Segoe UI', Arial, sans-serif;
+      font-size: 14px;
+      color: #1E1E1E;
+      background: #F5F6F8;
+      overflow: hidden;
+    }
+
+    /* ===== TOP NAV ===== */
+    .top-nav {
+      height: 64px;
+      background: #1A2B5E;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+    .nav-left { display: flex; align-items: center; gap: 40px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .logo-repco {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo-repco-box {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-repco-text { color: white; }
+    .logo-repco-text .brand { font-size: 11px; font-weight: 700; line-height: 1; }
+    .logo-repco-text .sub { font-size: 7.5px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+    .logo-divider {
+      width: 1px; height: 28px;
+      background: rgba(255,255,255,0.3);
+      margin: 0 4px;
+    }
+    .logo-uh { color: white; }
+    .logo-uh .uh-main { font-size: 13px; font-weight: 700; line-height: 1; }
+    .logo-uh .uh-sub { font-size: 8px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      padding: 4px 0;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-links a.active { color: white; font-weight: 600; }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .user-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: #4A7FC1;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 600; font-size: 13px;
+      flex-shrink: 0;
+    }
+    .user-name {
+      color: white; font-size: 14px;
+      display: flex; align-items: center; gap: 6px; cursor: pointer;
+    }
+    .nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.25); }
+    .menu-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.1);
+      border: none; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ===== SUB-HEADER ===== */
+    .sub-header {
+      height: 52px;
+      background: white;
+      border-bottom: 1px solid #E9EAEC;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      z-index: 99;
+    }
+    .company-label { font-size: 18px; font-weight: 400; }
+    .company-label strong { font-weight: 700; margin-left: 4px; }
+    .sub-right { display: flex; align-items: center; gap: 12px; }
+    .update-text { font-size: 13px; color: #3C444B; font-weight: 300; }
+    .refresh-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      border: 2px solid #1A2B5E;
+      border-radius: 8px;
+      background: white;
+      color: #1A2B5E;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s;
+    }
+    .refresh-btn:hover { background: #f0f3fa; }
+    .divider-v { width: 1px; height: 28px; background: #E9EAEC; }
+    .collapse-btn {
+      width: 32px; height: 32px;
+      border: 1px solid #E9EAEC;
+      border-radius: 6px; background: white;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ===== PAGE LAYOUT ===== */
+    .page-layout {
+      display: flex;
+      height: calc(100vh - 116px);
+      margin-top: 116px;
+      overflow: hidden;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 284px;
+      min-width: 284px;
+      background: #152040;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 12px 0 16px;
+      flex-shrink: 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    .search-box {
+      margin: 0 10px 12px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .search-box input {
+      background: transparent; border: none; outline: none;
+      color: rgba(255,255,255,0.75);
+      font-size: 13px; flex: 1; font-family: inherit;
+    }
+    .search-box input::placeholder { color: rgba(255,255,255,0.35); }
+
+    .tree-row {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 10px;
+      color: rgba(255,255,255,0.88);
+      font-size: 12.5px; cursor: pointer;
+      transition: background .15s;
+    }
+    .tree-row:hover { background: rgba(255,255,255,0.06); }
+    .tree-chevron {
+      font-size: 9px; color: rgba(255,255,255,0.45);
+      width: 12px; text-align: center; flex-shrink: 0;
+    }
+    .tree-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .tree-dot.g { background: #22C55E; }
+    .tree-dot.o { background: #FF8501; }
+    .tree-dot.r { background: #CE000F; }
+    .tree-dot.gray { background: #9CA3AF; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    .content-card {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      border: 1px solid #E9EAEC;
+    }
+
+    /* breadcrumb */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+      font-size: 12.5px; color: #6B7280; margin-bottom: 14px;
+    }
+    .breadcrumb a { color: #6B7280; text-decoration: none; }
+    .breadcrumb a:hover { color: #1A2B5E; text-decoration: underline; }
+    .breadcrumb .sep { color: #C5C9D0; font-size: 14px; }
+    .breadcrumb .crumb-current { color: #1E1E1E; }
+
+    .page-title { font-size: 26px; font-weight: 700; margin-bottom: 22px; color: #1E1E1E; }
+
+    /* tabs */
+    .tabs {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border: 1px solid #E9EAEC; border-radius: 8px 8px 0 0;
+      overflow: hidden; margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 11px 0;
+      border: none; background: #F3F4F6;
+      font-size: 14px; cursor: pointer; color: #6B7280;
+      font-family: inherit; border-right: 1px solid #E9EAEC;
+      transition: background .15s;
+    }
+    .tab-btn:last-child { border-right: none; }
+    .tab-btn:hover { background: #EAECF0; }
+    .tab-btn.active { background: white; color: #1E1E1E; font-weight: 600; }
+
+    /* table */
+    .table-wrap { overflow-x: auto; }
+    .policy-table {
+      width: 100%; border-collapse: collapse;
+      min-width: 780px;
+    }
+    .policy-table th {
+      text-align: left; padding: 10px 16px;
+      font-size: 12.5px; font-weight: 500; color: #3C444B;
+      border-bottom: 2px solid #E9EAEC; white-space: nowrap;
+    }
+    .policy-table td {
+      padding: 13px 16px; font-size: 13px; font-weight: 300;
+      border-bottom: 1px solid #F3F4F6; vertical-align: middle;
+    }
+    .policy-table tbody tr.clickable { cursor: pointer; }
+    .policy-table tbody tr.clickable:hover td { background: #F9FAFB; }
+    .sort-arrows { display: inline; margin-left: 4px; color: #9CA3AF; font-size: 10px; }
+
+    /* alert state icons */
+    .icon-alert {
+      width: 34px; height: 34px;
+      border: 2px solid #FF8501; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .icon-normal {
+      width: 34px; height: 34px;
+      background: #22C55E; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* runtime status dots */
+    .rt-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+    }
+    .rt-dot.red { background: #CE000F; }
+    .rt-dot.green { background: #22C55E; }
+    .rt-dot.orange { background: #FF8501; }
+
+    /* pagination */
+    .pagination-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid #E9EAEC;
+    }
+    .entries-select { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #3C444B; }
+    .entries-select select {
+      padding: 5px 8px; border: 1px solid #E9EAEC;
+      border-radius: 6px; font-size: 13px; font-family: inherit;
+      background: white; cursor: pointer; outline: none;
+    }
+    .page-btns { display: flex; align-items: center; gap: 3px; }
+    .page-btn {
+      min-width: 32px; height: 32px; padding: 0 8px;
+      border: 1px solid #E9EAEC; background: white;
+      border-radius: 4px; cursor: pointer; font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: inherit; transition: background .15s;
+    }
+    .page-btn:hover { background: #F3F4F6; }
+    .page-btn.active { background: #1A2B5E; color: white; border-color: #1A2B5E; }
+
+    /* footer */
+    .page-footer { text-align: center; padding: 16px; font-size: 12px; color: #9CA3AF; }
+
+    /* ===== DRAWER ===== */
+    .drawer-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+    .drawer-panel {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: min(992px, 100vw);
+      background: white;
+      z-index: 201;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+    }
+    .drawer-panel.open { transform: translateX(0); }
+
+    .drawer-inner {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 28px 40px 40px;
+    }
+    .drawer-inner::-webkit-scrollbar { width: 4px; }
+    .drawer-inner::-webkit-scrollbar-thumb { background: #E9EAEC; border-radius: 4px; }
+
+    /* drawer header */
+    .drawer-header-row {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 16px;
+    }
+    .drawer-title { font-size: 20px; font-weight: 600; line-height: 1.3; flex: 1; }
+    .drawer-close {
+      width: 32px; height: 32px; flex-shrink: 0;
+      border: none; background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #6B7280; border-radius: 4px;
+      transition: background .15s;
+    }
+    .drawer-close:hover { background: #F3F4F6; color: #1E1E1E; }
+
+    .hr { border: none; border-top: 1px solid #E9EAEC; margin: 24px 0; }
+
+    /* time series section */
+    .ts-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+      margin-bottom: 4px;
+    }
+    .ts-title { font-size: 20px; font-weight: 600; }
+
+    .date-range-wrap {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .date-range-label { font-size: 12px; color: #6B7280; white-space: nowrap; }
+    .date-input-pair {
+      display: flex; align-items: center; gap: 4px;
+      border: 1px solid #E9EAEC; border-radius: 8px;
+      padding: 4px 10px; background: white;
+    }
+    .date-input-pair input[type="date"] {
+      border: none; outline: none; font-size: 13px;
+      font-family: inherit; color: #1E1E1E; background: transparent;
+      cursor: pointer;
+    }
+    .date-input-sep { color: #9CA3AF; font-size: 12px; padding: 0 2px; }
+    .apply-btn {
+      padding: 7px 16px;
+      background: #1A2B5E; color: white;
+      border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s;
+    }
+    .apply-btn:hover { background: #152040; }
+
+    /* chart cards */
+    .chart-card {
+      border: 1px solid #E9EAEC; border-radius: 6px;
+      margin-top: 16px; overflow: hidden;
+    }
+    .chart-card-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px 6px;
+    }
+    .chart-name-row { display: flex; align-items: center; gap: 8px; }
+    .chart-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .chart-name { font-size: 13.5px; font-weight: 500; color: #3C444B; }
+    .chart-value { font-size: 12px; font-weight: 300; color: #6B7280; }
+    .chart-value strong { font-weight: 600; color: #1E1E1E; }
+    .chart-echarts { height: 320px; }
+
+    /* loading / empty states */
+    .loading-block {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; padding: 48px;
+      color: #9CA3AF; font-size: 13px; font-weight: 300;
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid #E9EAEC;
+      border-top-color: #1A2B5E;
+      border-radius: 50%;
+      animation: spin .75s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .no-data {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      color: #9CA3AF; font-size: 14px; font-weight: 300;
+    }
+
+    /* toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1E1E1E; color: white;
+      padding: 10px 20px; border-radius: 8px;
+      font-size: 13px; z-index: 300;
+      transition: transform .3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { background: #CE000F; }
+  </style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<header class="top-nav">
+  <div class="nav-left">
+    <div class="nav-logo">
+      <div class="logo-repco">
+        <div class="logo-repco-box">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M4 6h20v3H4zM4 12h14v3H4zM4 18h17v3H4z" fill="white" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="logo-repco-text">
+          <div class="brand">REPCO NEX</div>
+          <div class="sub">INDUSTRIAL SOLUTIONS</div>
+        </div>
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-uh">
+        <div class="uh-main">UH</div>
+        <div class="uh-sub">Unified Health</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="#">Dashboard</a>
+      <a href="#" class="active">Alert</a>
+    </nav>
+  </div>
+  <div class="nav-right">
+    <div class="user-avatar">SA</div>
+    <span class="user-name">
+      Super Admin
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <div class="nav-divider"></div>
+    <button class="menu-btn" title="Menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== SUB-HEADER ===== -->
+<div class="sub-header">
+  <div class="company-label">Company :<strong>TPC</strong></div>
+  <div class="sub-right">
+    <span class="update-text" id="updateText">Overall : Updated 10/03/2026 - 13:30</span>
+    <button class="refresh-btn" onclick="handleRefresh()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Refresh data
+    </button>
+    <div class="divider-v"></div>
+    <button class="collapse-btn" title="Collapse">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 15l-6-6-6 6" stroke="#3C444B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ===== PAGE LAYOUT ===== -->
+<div class="page-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="search-box">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.45)" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Search">
+    </div>
+
+    <!-- Tree -->
+    <div class="tree-row" style="padding-left:8px">
+      <span class="tree-chevron">▾</span>
+      <span class="tree-dot g"></span><span>TPC</span>
+    </div>
+    <div class="tree-row" style="padding-left:22px">
+      <span class="tree-chevron">▾</span>
+      <span class="tree-dot g"></span><span>PVC5</span>
+    </div>
+    <div class="tree-row" style="padding-left:36px">
+      <span class="tree-chevron">▾</span>
+      <span class="tree-dot o"></span><span>SECTION 100</span>
+    </div>
+    <div class="tree-row" style="padding-left:50px">
+      <span class="tree-chevron">▾</span>
+      <span class="tree-dot o"></span><span>ROTATING EQUIPMENT</span>
+    </div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA101A</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA101B</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA102B</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA107</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA111</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA122</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA126A</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA126B</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GC101</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GD101</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GD104A</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GD111</span></div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GD113</span></div>
+    <div class="tree-row" style="padding-left:36px">
+      <span class="tree-chevron">▾</span>
+      <span class="tree-dot o"></span><span>SECTION 200</span>
+    </div>
+    <div class="tree-row" style="padding-left:50px">
+      <span class="tree-chevron">▾</span>
+      <span class="tree-dot g"></span><span>ROTATING EQUIPMENT</span>
+    </div>
+    <div class="tree-row" style="padding-left:64px"><span class="tree-dot g"></span><span>P-GA204A</span></div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="content-card">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Alert</a>
+        <span class="sep">›</span>
+        <a href="#">TPC</a>
+        <span class="sep">›</span>
+        <span>···</span>
+        <span class="sep">›</span>
+        <a href="#">CORROSION CIRCUIT</a>
+        <span class="sep">›</span>
+        <span class="crumb-current">12-P-4007-B3A-P</span>
+      </nav>
+
+      <h1 class="page-title">12-P-4007-B3A-P</h1>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn">Asset tree</button>
+        <button class="tab-btn active">Policy list</button>
+        <button class="tab-btn">Information</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <table class="policy-table">
+          <thead>
+            <tr>
+              <th>Alert state</th>
+              <th>Input name <span class="sort-arrows">⇅</span></th>
+              <th>Severity scores (%) <span class="sort-arrows">⇅</span></th>
+              <th>Runtime status</th>
+              <th>Alert age (Day) <span class="sort-arrows">⇅</span></th>
+              <th>Earliest alert <span class="sort-arrows">⇅</span></th>
+              <th>Latest alert <span class="sort-arrows">⇅</span></th>
+              <th>URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable" onclick="openDrawer()">
+              <td>
+                <div class="icon-alert">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF8501"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+              </td>
+              <td>Loss of EDC/VCM containment at pipeline (12-P-4007-B3A-P elbow 80 cm)</td>
+              <td>50</td>
+              <td><div class="rt-dot red"></div></td>
+              <td>0.1</td>
+              <td>10/03/2026 - 09:28</td>
+              <td>10/03/2026 - 10:48</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="icon-normal">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </td>
+              <td>Loss of EDC/VCM containment at pipeline (12-P-4007-B3A-P orifice (RO407) 35 cm)</td>
+              <td>0</td>
+              <td><div class="rt-dot green"></div></td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-row">
+        <div class="entries-select">
+          <select>
+            <option>10</option><option>20</option><option>50</option>
+          </select>
+          <span>Entries per page</span>
+        </div>
+        <div class="page-btns">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">© Copyright 2023 REPCONEX | Application Version 1.1.5</div>
+  </main>
+</div>
+
+<!-- ===== DRAWER ===== -->
+<div class="drawer-overlay" id="drawerOverlay">
+  <div class="drawer-panel" id="drawerPanel">
+    <div class="drawer-inner" id="drawerInner">
+
+      <!-- Header -->
+      <div class="drawer-header-row">
+        <h2 class="drawer-title">Loss of EDC/VCM containment at pipeline (12-P-4007-B3A-P elbow 80 cm)</h2>
+        <button class="drawer-close" onclick="closeDrawer()" title="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="hr"></div>
+
+      <!-- Time series section -->
+      <div class="ts-header">
+        <h3 class="ts-title">Indicator Results</h3>
+        <div class="date-range-wrap">
+          <span class="date-range-label">Range Date</span>
+          <div class="date-input-pair">
+            <input type="date" id="startDateInput">
+            <span class="date-input-sep">—</span>
+            <input type="date" id="endDateInput">
+          </div>
+          <button class="apply-btn" onclick="loadAllCharts()">Apply</button>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div id="chartsContainer">
+        <div class="loading-block">
+          <div class="spinner"></div>
+          <span>Loading indicators…</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────────────────────────
+const API_BASE   = 'https://uhm.scg.com/api';
+const COMPANY_ID = '69af80b90e93d9ce09e94ef7';
+const ALERT_ID   = '68d269b74f0d53774f8c01bf';
+
+const CREDENTIALS = { email: 'super_admin@scg.com', password: '@Admin01' };
+
+// Status: 0=Normal, 1=Warning, 2=Alert
+const STATUS = { NORMAL: 0, WARNING: 1, ALERT: 2 };
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let accessToken   = null;
+let indicators    = [];         // children from indicator-tree
+let chartInstances = {};        // id → echarts instance
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+async function ensureToken() {
+  if (accessToken) return;
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(CREDENTIALS),
+  });
+  if (!res.ok) throw new Error(`Auth failed: ${res.status}`);
+  const data = await res.json();
+  accessToken = data.accessToken;
+}
+
+// ─── API CALLS ────────────────────────────────────────────────────────────────
+async function fetchIndicatorTree() {
+  const res = await fetch(
+    `${API_BASE}/dashboard/${COMPANY_ID}/alert/${ALERT_ID}/indicator-tree`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  if (!res.ok) throw new Error(`indicator-tree: ${res.status}`);
+  const data = await res.json();
+  // Response is the parent object with a children array
+  if (Array.isArray(data)) return data;
+  if (data.children) return data.children;
+  return [];
+}
+
+async function fetchIndicatorLogs(indicatorId, startDate, endDate) {
+  const params = new URLSearchParams({
+    sortBy: 'createdAt', sortDirection: 'asc', startDate, endDate
+  });
+  const res = await fetch(
+    `${API_BASE}/company-deploy-logs/${COMPANY_ID}/indicators/${indicatorId}?${params}`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  if (!res.ok) return { logs: [], criteriaSetting: null };
+  const data = await res.json();
+  return {
+    logs: data.indicatorLogs || [],
+    criteriaSetting: data.criteriaSetting || null,
+  };
+}
+
+// ─── DATES ────────────────────────────────────────────────────────────────────
+// Convert a YYYY-MM-DD picker value to ISO string using Thai timezone convention
+// Thai day starts at UTC 17:00 previous day, ends at UTC 16:59:59 same day
+function toApiDateStart(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  // Thai midnight (00:00 ICT) = previous day 17:00 UTC
+  return new Date(Date.UTC(y, m - 1, d - 1, 17, 0, 0, 0)).toISOString();
+}
+function toApiDateEnd(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  // Thai end-of-day (23:59:59 ICT) = same day 16:59:59 UTC
+  return new Date(Date.UTC(y, m - 1, d, 16, 59, 59, 999)).toISOString();
+}
+
+// Get today's date in Thailand timezone as YYYY-MM-DD
+function todayThai() {
+  const now = new Date();
+  const bkk = new Date(now.getTime() + 7 * 3600 * 1000);
+  return bkk.toISOString().slice(0, 10);
+}
+
+// ─── STATUS COLORS ────────────────────────────────────────────────────────────
+function statusColor(s) {
+  if (s === STATUS.ALERT)   return '#CE000F';
+  if (s === STATUS.WARNING) return '#FF8501';
+  return '#22C55E';
+}
+function dotColor(s) {
+  if (s === STATUS.ALERT)   return '#CE000F';
+  if (s === STATUS.WARNING) return '#FF8501';
+  return '#22C55E';
+}
+
+// ─── MARK AREA (mirrors TimeSeriesChart logic) ────────────────────────────────
+function buildMarkArea(logs) {
+  if (!logs.length) return [];
+  const startIdx = logs.findIndex(l => l.status !== STATUS.NORMAL);
+  if (startIdx === -1) return [];
+
+  let cur = logs[startIdx].status;
+  const result = [[{
+    xAxis: logs[startIdx].createdAt,
+    itemStyle: { color: statusColor(cur), opacity: 0.2 }
+  }]];
+
+  for (let i = startIdx + 1; i < logs.length; i++) {
+    const s = logs[i].status;
+    if (s === cur) {
+      if (s !== STATUS.NORMAL) result[result.length - 1][1] = { xAxis: logs[i].createdAt };
+    } else if (s !== STATUS.NORMAL) {
+      if (cur !== STATUS.NORMAL) result[result.length - 1][1] = { xAxis: logs[i].createdAt };
+      result.push([{
+        xAxis: logs[i].createdAt,
+        itemStyle: { color: statusColor(s), opacity: 0.2 }
+      }]);
+    } else {
+      result[result.length - 1][1] = { xAxis: logs[i].createdAt };
+    }
+    cur = s;
+  }
+
+  // Finalise: ensure every entry has 2 items
+  return result.map(r => r.length === 1 ? [r[0], { xAxis: r[0].xAxis }] : r);
+}
+
+// ─── MARK LINES (criteria thresholds) ────────────────────────────────────────
+function buildMarkLines(cs) {
+  if (!cs) return [];
+  const entries = Object.entries(cs);
+  const numCount = entries.filter(([, v]) => typeof v === 'number').length;
+  if (numCount !== 2 && numCount !== 4) return [];
+
+  return entries.reduce((acc, [k, v]) => {
+    if (typeof v !== 'number') return acc;
+    const isAlarm   = k === 'lowLow' || k === 'highHigh';
+    const isWarning = k === 'low'    || k === 'high';
+    const color = isAlarm ? '#CE000F' : isWarning ? '#FF8501' : null;
+    if (color) acc.push({ yAxis: `${v}`, lineStyle: { color }, label: { show: false } });
+    return acc;
+  }, []);
+}
+
+// ─── CHART RENDER ─────────────────────────────────────────────────────────────
+// Sync flag to prevent infinite zoom loop
+let _syncing = false;
+
+function renderChart(domId, logs, name, criteriaSetting) {
+  const el = document.getElementById(domId);
+  if (!el) return;
+
+  // Dispose previous instance
+  if (chartInstances[domId]) { chartInstances[domId].dispose(); }
+  if (!logs.length) {
+    el.innerHTML = '<div class="no-data">No data</div>';
+    el.style.height = '';
+    return;
+  }
+
+  el.style.height = '320px';
+  const chart = echarts.init(el);
+  chartInstances[domId] = chart;
+
+  const markAreaData  = buildMarkArea(logs);
+  const markLineData  = buildMarkLines(criteriaSetting);
+
+  const option = {
+    dataset: { source: logs, dimensions: ['createdAt', 'value'] },
+    toolbox: {
+      top: '8px', right: '16px',
+      feature: {
+        dataZoom: {
+          show: true,
+          iconStyle: { borderColor: '#1E1E1E' },
+          emphasis: { iconStyle: { borderColor: '#2E53A3' } },
+          brushStyle: { color: '#2E53A3', opacity: 0.1 },
+        },
+      },
+    },
+    tooltip: {
+      trigger: 'axis', borderWidth: 0, padding: 0,
+      formatter(params) {
+        const log  = params[0].data;
+        const d    = new Date(log.createdAt);
+        const pad  = n => String(n).padStart(2, '0');
+        const date = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        const color = dotColor(log.status);
+        return `
+          <div style="background:white;border:1px solid #E9EAEC;border-radius:6px;padding:8px 12px;
+                      font-size:12px;min-width:210px;box-shadow:0 4px 12px rgba(0,0,0,0.1);
+                      font-family:'Prompt','Segoe UI',Arial,sans-serif;">
+            <p style="color:#3C444B;">${date}</p>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:5px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0;"></div>
+              <span style="font-weight:300;color:#1E1E1E;">${name} : <strong>${log.value}</strong></span>
+            </div>
+          </div>`;
+      },
+    },
+    textStyle: { fontFamily: "'Prompt','Segoe UI',Arial,sans-serif" },
+    grid: { top: '52px', left: '60px', right: '16px', bottom: '100px' },
+    xAxis: {
+      type: 'time',
+      axisTick: { lineStyle: { color: '#3C444B' } },
+      axisLabel: {
+        color: '#3C444B', fontSize: 12, fontWeight: 300, margin: 14,
+        showMinLabel: true, hideOverlap: true,
+        formatter(value) {
+          const d = new Date(value);
+          const pad = n => String(n).padStart(2, '0');
+          const hh  = pad(d.getHours()), mm = pad(d.getMinutes());
+          const dd  = pad(d.getDate()),  mo = pad(d.getMonth()+1), yy = d.getFullYear();
+          if (d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() === 0) {
+            return `${hh}:${mm}\n${dd}/${mo}/${yy}`;
+          }
+          return `${hh}:${mm}`;
+        },
+      },
+      axisLine:  { show: true,  lineStyle: { color: '#E9EAEC' } },
+      splitLine: { show: true,  lineStyle: { color: '#E9EAEC' } },
+    },
+    yAxis: {
+      type: 'value', splitNumber: 5,
+      axisTick:  { show: true, lineStyle: { color: '#3C444B' } },
+      axisLabel: { color: '#3C444B', fontSize: 12, fontWeight: 300, margin: 11 },
+      axisLine:  { show: true, lineStyle: { color: '#E9EAEC' } },
+      splitLine: { show: true, lineStyle: { color: '#E9EAEC' } },
+    },
+    dataZoom: [
+      { type: 'inside' },
+      { type: 'slider', left: '16px', right: '16px', bottom: '16px' },
+    ],
+    visualMap: { show: false, color: ['#1E1E1E'] },
+    series: [{
+      type: 'line', showSymbol: false,
+      lineStyle: { width: 1 },
+      z: 3,
+      markArea: { data: markAreaData },
+      markLine: markLineData.length
+        ? { silent: true, symbol: 'none', lineStyle: { color: '#333' }, data: markLineData }
+        : undefined,
+    }],
+  };
+
+  chart.setOption(option);
+
+  // ── Zoom sync across all charts ──────────────────────────────────────────
+  chart.on('dataZoom', function(e) {
+    if (_syncing) return;
+    _syncing = true;
+
+    let range;
+    if (typeof e.start === 'number') {
+      range = { start: e.start, end: e.end };
+    } else if (e.batch && e.batch[0]) {
+      const b = e.batch[0];
+      range = b.startValue !== undefined
+        ? { startValue: b.startValue, endValue: b.endValue }
+        : { start: b.start, end: b.end };
+    } else {
+      _syncing = false;
+      return;
+    }
+
+    Object.entries(chartInstances).forEach(([id, c]) => {
+      if (id === domId || !c) return;
+      const inst = c.getEchartsInstance ? c.getEchartsInstance() : c;
+      if (!inst) return;
+      [0, 1].forEach(idx => inst.dispatchAction({ type: 'dataZoom', dataZoomIndex: idx, ...range }));
+    });
+
+    _syncing = false;
+  });
+
+  // ── Resize observer ──────────────────────────────────────────────────────
+  new ResizeObserver(() => chart.resize()).observe(el);
+}
+
+// ─── LOAD ALL CHARTS ──────────────────────────────────────────────────────────
+async function loadAllCharts() {
+  const startVal = document.getElementById('startDateInput').value;
+  const endVal   = document.getElementById('endDateInput').value;
+  if (!startVal || !endVal) { showToast('Please select a date range', true); return; }
+
+  const startDate = toApiDateStart(startVal);
+  const endDate   = toApiDateEnd(endVal);
+
+  // Dispose old instances
+  Object.values(chartInstances).forEach(c => c && c.dispose && c.dispose());
+  chartInstances = {};
+
+  const container = document.getElementById('chartsContainer');
+  container.innerHTML = `<div class="loading-block"><div class="spinner"></div><span>Loading charts…</span></div>`;
+
+  try {
+    await ensureToken();
+
+    // Fetch all logs in parallel
+    const results = await Promise.all(
+      indicators.map(ind => fetchIndicatorLogs(ind._id, startDate, endDate))
+    );
+
+    // Build HTML skeleton for all chart cards
+    container.innerHTML = indicators.map((ind, i) => {
+      const color = dotColor(ind.status);
+      return `
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-name-row">
+              <div class="chart-status-dot" style="background:${color}"></div>
+              <span class="chart-name">${ind.name}</span>
+            </div>
+          </div>
+          <div id="echart-${ind._id}" class="chart-echarts"></div>
+        </div>`;
+    }).join('');
+
+    // Render each chart
+    indicators.forEach((ind, i) => {
+      renderChart(`echart-${ind._id}`, results[i].logs, ind.name, results[i].criteriaSetting);
+    });
+
+  } catch (err) {
+    container.innerHTML = `
+      <div style="padding:32px 0;text-align:center;color:#CE000F;font-size:13px;">
+        <strong>Error:</strong> ${err.message}<br>
+        <small style="color:#9CA3AF;font-weight:300;margin-top:6px;display:block;">
+          If this is a CORS error, try serving this file from a local web server.
+        </small>
+      </div>`;
+  }
+}
+
+// ─── DRAWER ───────────────────────────────────────────────────────────────────
+let drawerOpened = false;
+
+async function openDrawer() {
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawerPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Set default dates (today in Thai timezone)
+  const today = todayThai();
+  const startEl = document.getElementById('startDateInput');
+  const endEl   = document.getElementById('endDateInput');
+  if (!startEl.value) startEl.value = today;
+  if (!endEl.value)   endEl.value   = today;
+
+  // Load only on first open (or if indicators not yet fetched)
+  if (!drawerOpened) {
+    drawerOpened = true;
+    try {
+      await ensureToken();
+      indicators = await fetchIndicatorTree();
+      await loadAllCharts();
+    } catch (err) {
+      document.getElementById('chartsContainer').innerHTML =
+        `<div style="padding:32px 0;text-align:center;color:#CE000F;font-size:13px;">
+          <strong>Error:</strong> ${err.message}
+        </div>`;
+    }
+  }
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('drawerPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close when clicking overlay (not panel)
+document.getElementById('drawerOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDrawer();
+});
+
+// ESC key to close
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// Open drawer by default on page load
+openDrawer();
+
+// ─── MISC ────────────────────────────────────────────────────────────────────
+function handleRefresh() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const text = `Overall : Updated ${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()} - ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  document.getElementById('updateText').textContent = text;
+}
+
+let _toastTimer;
+function showToast(msg, isError = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast' + (isError ? ' error' : '');
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
